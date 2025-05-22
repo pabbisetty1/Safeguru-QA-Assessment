@@ -1,0 +1,11 @@
+//5.	CartFunctionality:
+test('Cart updates correctly', async ({ page }) => {
+  await page.goto('https://safeguru.com/cart');
+  await page.fill('.cart-item-quantity', '2');
+  await expect(page.locator('.cart-total')).toContainText('Updated Price');
+});
+
+test('Removing item updates cart', async ({ page }) => {
+  await page.click('.remove-item');
+  await expect(page.locator('.cart-items')).not.toContainText('guantes');
+});
