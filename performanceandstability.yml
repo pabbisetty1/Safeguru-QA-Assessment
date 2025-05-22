@@ -1,4 +1,4 @@
-//Performance and Stability:
+//Performance and Stability
 test('Measure page load times', async ({ page }) => {
   const startTime = Date.now();
   await page.goto('https://safeguru.com');
