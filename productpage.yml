@@ -1,4 +1,4 @@
-// Product Page:
+// Product Page
 test('Product details load correctly and gallery functions', async ({ page }) => {
   // Perform a search and select a product
   await page.goto('https://safeguru.com');
