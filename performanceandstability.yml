@@ -1,0 +1,17 @@
+//Performance and Stability:
+test('Measure page load times', async ({ page }) => {
+  const startTime = Date.now();
+  await page.goto('https://safeguru.com');
+  const loadTime = Date.now() - startTime;
+  console.log(`Homepage load time: ${loadTime}ms`);
+  expect(loadTime).toBeLessThan(3000);
+});
+
+test('Check for console errors', async ({ page }) => {
+  page.on('console', msg => {
+    if (msg.type() === 'error') {
+      console.error(`Console error detected: ${msg.text()}`);
+    }
+  });
+  await page.goto('https://safeguru.com');
+});
