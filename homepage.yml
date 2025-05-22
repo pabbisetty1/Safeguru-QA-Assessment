@@ -1,0 +1,25 @@
+//1.	HomepageFunctionality:
+
+import { test, expect } from '@playwright/test';
+test.describe('Homepage Functionality', () => {
+  // Verify homepage loads correctly with key elements
+  test('loads with header, footer, and featured sections', async ({ page }) => {
+    await page.goto('https://safeguru.com');
+    await expect(page.locator('header')).toBeVisible();
+    await expect(page.locator('footer')).toBeVisible();
+    await expect(page.locator('.featured-products')).toBeVisible();
+  });
+
+  // Check responsiveness on desktop and mobile
+  test('responsive layout for desktop and mobile', async ({ page }) => {
+    // Desktop
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await page.goto('https://safeguru.com');
+    await expect(page.locator('.desktop-layout-specific-element')).toBeVisible();
+
+    // Mobile
+    await page.setViewportSize({ width: 375, height: 667 });
+    await page.reload();
+    await expect(page.locator('.mobile-menu')).toBeVisible();
+  });
+});
