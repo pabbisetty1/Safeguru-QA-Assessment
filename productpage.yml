@@ -1,0 +1,43 @@
+// Product Page:
+test('Product details load correctly and gallery functions', async ({ page }) => {
+  // Perform a search and select a product
+  await page.goto('https://safeguru.com');
+  await page.locator('input[name="search"]').fill('guantes');
+  await page.locator('input[name="search"]').press('Enter');
+
+  // Click on the first product
+  await page.locator('.search-results .product-item').first().click();
+
+  // Verify product details
+  await expect(page.locator('.product-name')).toBeVisible();
+  await expect(page.locator('.product-price')).toBeVisible();
+  await expect(page.locator('.product-description')).toBeVisible();
+
+  // Verify images load
+  const images = page.locator('.product-gallery img');
+  const count = await images.count();
+  for (let i = 0; i < count; i++) {
+    const img = images.nth(i);
+    const src = await img.getAttribute('src');
+    const response = await page.request.get(src!);
+    expect(response.ok()).toBeTruthy();
+  }
+  // Test gallery functionality
+  await images.nth(1).click(); // e.g., clicking thumbnails
+  // Verify main image updates (if applicable)
+});
+
+test('Add to Cart works', async ({ page }) => {
+  await page.goto('https://safeguru.com');
+  // Select product
+  await page.locator('.search-results .product-item').first().click();
+  await expect(page.locator('.add-to-cart-btn')).toBeEnabled();
+  await page.click('.add-to-cart-btn');
+
+  // Verify cart updates
+  await page.click('.cart-icon');
+  await expect(page.locator('.cart-item')).toHaveCount(1);
+  const price = await page.locator('.cart-item .price').innerText();
+  expect(price).toBeDefined(); // further checks can be added
+});
+
