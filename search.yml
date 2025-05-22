@@ -1,0 +1,16 @@
+//Search Functionality
+
+test('Search bar returns correct results', async ({ page }) => {
+  await page.goto('https://safeguru.com');
+  await page.fill('input[name="search"]', 'guantes');
+  await page.press('input[name="search"]', 'Enter');
+  await expect(page.locator('.search-results')).toContainText('guantes');
+});
+
+test('Pagination works correctly', async ({ page }) => {
+  await page.goto('https://safeguru.com/search?q=guantes');
+  await expect(page.locator('.pagination')).toBeVisible();
+  await page.click('.pagination-next');
+  await expect(page.locator('.search-results')).toBeVisible();
+});
+
